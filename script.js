@@ -6,17 +6,21 @@ function setup() {
 
 function makePageForEpisodes(episodeList) {
   const mainContentElem = document.getElementById("content");
+  const footerEl = document.getElementById("footer-id");
+  footerEl.innerHTML = "Data is from https://tvmaze.com/"; //need to include it as a link
 
   // declare classes to style the whole view of the page
 
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 6; i++) {
     //Creating all the elements needed for each episode + append them
     // console.log(allEpisodesVar);
     let sectionElm = document.createElement("section");
     mainContentElem.appendChild(sectionElm);
+    sectionElm.className = "section-style";
 
     let episodeNameEl = document.createElement("h3");
     sectionElm.appendChild(episodeNameEl);
+    episodeNameEl.className = "title-background";
 
     //let seasonNumberEl = ;
     //episodeNumberEl = ;
@@ -33,7 +37,7 @@ function makePageForEpisodes(episodeList) {
     let seasonNumber = episodeList[i].season;
     let episodeNumber = episodeList[i].number;
 
-    episodeNameEl.textContent = `${epiName} - 0${seasonNumber}0${episodeNumber}`;
+    episodeNameEl.textContent = `${epiName} - S0${seasonNumber}E0${episodeNumber}`;
 
     //episode image
     episodeImageEl.src = episodeList[i].image.medium;
