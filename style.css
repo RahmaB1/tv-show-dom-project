@@ -1,12 +1,13 @@
 body {
   width: 80%;
   background-color: black;
+  color: white;
 
 }
 
 
 #header-id {
-  /* background-color: green; */
+  background-color: grey;
 }
 
 #content{

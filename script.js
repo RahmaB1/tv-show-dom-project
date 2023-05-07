@@ -2,6 +2,44 @@
 function setup() {
   const allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
+  makeLiveSearch();
+}
+
+function makeLiveSearch() {
+  let searchBoxEl = document.createElement("input");
+  let headerEl = document.getElementById("header-id");
+  headerEl.appendChild(searchBoxEl);
+  let displayFilteredEpisodeNumberP = document.createElement("p");
+  headerEl.appendChild(displayFilteredEpisodeNumberP);
+
+  searchBoxEl.addEventListener("input", function () {
+    let searchedWords = searchBoxEl.value;
+    const allEpisodes = getAllEpisodes();
+    let episodesAfterSearch = isEpisodeIncludeWord(allEpisodes, searchedWords);
+
+    //to display number of results from the search
+    let lengthOfFilteredEpisodes =
+      episodesAfterSearch.length > 0 ? episodesAfterSearch.length : 0;
+    displayFilteredEpisodeNumberP.innerHTML = `Displaying ${lengthOfFilteredEpisodes}/${allEpisodes.length} episodes.`;
+
+    makePageForEpisodes(episodesAfterSearch);
+  });
+
+  function isEpisodeIncludeWord(allepisodes, word) {
+    let filteredEpisodes = [];
+
+    for (let episode of allepisodes) {
+      if (
+        episode.name.toLowerCase().includes(word.toLowerCase()) ||
+        episode.summary.toLowerCase().includes(word.toLowerCase())
+      ) {
+        filteredEpisodes.push(episode);
+      }
+    }
+    return filteredEpisodes;
+  }
+
+  //will call makePageForEpisodes() when i finish the search and pass the filtered objects
 }
 
 function makePageForEpisodes(episodeList) {
@@ -9,7 +47,8 @@ function makePageForEpisodes(episodeList) {
   const footerEl = document.getElementById("footer-id");
   footerEl.innerHTML = "Data is from https://tvmaze.com/"; //need to include it as a link
 
-  // declare classes to style the whole view of the page
+  //clear everything before we start - mostly for search
+  mainContentElem.innerHTML = " ";
 
   for (let i = 0; i < 6; i++) {
     //Creating all the elements needed for each episode + append them
@@ -21,10 +60,6 @@ function makePageForEpisodes(episodeList) {
     let episodeNameEl = document.createElement("h3");
     sectionElm.appendChild(episodeNameEl);
     episodeNameEl.className = "title-background";
-
-    //let seasonNumberEl = ;
-    //episodeNumberEl = ;
-    //will get it then add it with the name in h3 ;
 
     let episodeImageEl = document.createElement("img");
     sectionElm.appendChild(episodeImageEl);
@@ -45,25 +80,6 @@ function makePageForEpisodes(episodeList) {
     //episode summary
     summaryEl.innerHTML = episodeList[i].summary;
   }
-
-  //   the episode's name
-  // the season number
-  // the episode number
-  // the episode's medium-sized image
-  // the episode's summary text
 }
 
 window.onload = setup;
-
-//from Michael
-
-// function makePageForEpisodes(episodeList) {
-// const rootElem = document.getElementById("root");
-// for (let i = 0; i < 5; i++) {
-// let mySectionElement = document.createElement("section");
-// let myH3Element = document.createElement("h2");
-// myH3Element.textContent = `My Section Title ${i + 1}`;
-// mySectionElement.appendChild(myH3Element);
-// rootElem.appendChild(mySectionElement);
-// }
-// }
