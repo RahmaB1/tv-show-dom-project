@@ -2,10 +2,39 @@
 function setup() {
   const allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
-  makeLiveSearch();
+  makeLiveSearch(allEpisodes);
+  selectEpisode(allEpisodes);
 }
 
-function makeLiveSearch() {
+function selectEpisode(episodes) {
+  //preparing the elements for the container
+  let headerEl = document.getElementById("header-id");
+  let selectDivEl = document.createElement("div");
+  headerEl.appendChild(selectDivEl);
+
+  //creating select
+  let selectEl = document.createElement("select");
+  selectDivEl.appendChild(selectEl);
+
+  //create one option for testing
+
+  let option1 = document.createElement("option");
+  option1.text = "Option 1";
+  selectEl.add(option1);
+
+  // insert the name for the option
+  for (let i = 0; i < 1; i++) {
+    option1.text = `${episodes[i].name} - S0${episodes[i].season}E0${episodes[i].number}`;
+  }
+
+  //what happend when the option is clicked
+
+  option2.addEventListener("click", () => {
+    makePageForEpisodes(episodes[1]);
+  });
+}
+
+function makeLiveSearch(allEpisodes) {
   let searchBoxEl = document.createElement("input");
   let headerEl = document.getElementById("header-id");
   headerEl.appendChild(searchBoxEl);
@@ -14,7 +43,7 @@ function makeLiveSearch() {
 
   searchBoxEl.addEventListener("input", function () {
     let searchedWords = searchBoxEl.value;
-    const allEpisodes = getAllEpisodes();
+    // const allEpisodes = getAllEpisodes();
     let episodesAfterSearch = isEpisodeIncludeWord(allEpisodes, searchedWords);
 
     //to display number of results from the search
@@ -38,8 +67,6 @@ function makeLiveSearch() {
     }
     return filteredEpisodes;
   }
-
-  //will call makePageForEpisodes() when i finish the search and pass the filtered objects
 }
 
 function makePageForEpisodes(episodeList) {
