@@ -1,9 +1,21 @@
-//You can edit ALL of the code here
-function setup() {
-  const allEpisodes = getAllEpisodes();
+async function setup() {
+  // const allEpisodes = getAllEpisodes();
+  //fetch allEpisodes from API
+  let allEpisodes = await fetchFromApi();
   makePageForEpisodes(allEpisodes);
   makeLiveSearch(allEpisodes);
   selectEpisode(allEpisodes);
+}
+
+async function fetchFromApi() {
+  try {
+    const response = await fetch("https://api.tvmaze.com/shows/82/episodes");
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 }
 
 function selectEpisode(episodes) {
@@ -120,5 +132,3 @@ function makePageForEpisodes(episodeList) {
 }
 
 window.onload = setup;
-
-//test
