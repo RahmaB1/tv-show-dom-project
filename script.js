@@ -12,30 +12,40 @@ function selectEpisode(episodes) {
   let selectDivEl = document.createElement("div");
   headerEl.appendChild(selectDivEl);
 
-  //creating select
+  let selectTitleEl = document.createElement("h3");
+  selectTitleEl.textContent = "Select...";
+  selectDivEl.appendChild(selectTitleEl);
   let selectEl = document.createElement("select");
   selectDivEl.appendChild(selectEl);
 
-  //create one option for testing
+  for (let i = 0; i < 10; i++) {
+    // 1- create option 2-event listener 3- render the page out of for block
+    //  1- create option = done
+    let option = document.createElement("option");
+    option.value = i;
+    option.text = `${episodes[i].name} - S0${episodes[i].season}E0${episodes[i].number}`;
 
-  let option1 = document.createElement("option");
-  option1.text = "Option 1";
-  selectEl.add(option1);
+    // 2-event listener = still have issue here nothing is happened when clicking on any opiton
+    //when changing to selectEl.addEventListener it is working but repeating the action xlength times
 
-  // insert the name for the option
-  for (let i = 0; i < 1; i++) {
-    option1.text = `${episodes[i].name} - S0${episodes[i].season}E0${episodes[i].number}`;
+    selectEl.appendChild(option);
   }
 
-  //what happend when the option is clicked
+  selectEl.addEventListener("click", function (event) {
+    console.log("You clicked option " + event.target.value);
+    //clear everything first
+    let contentEl = document.getElementById("content");
+    contentEl.innerHTML = "";
+    //then show new content here
 
-  option2.addEventListener("click", () => {
-    makePageForEpisodes(episodes[1]);
+    let arrayTest = [episodes[event.target.value]];
+    makePageForEpisodes(arrayTest);
   });
 }
 
 function makeLiveSearch(allEpisodes) {
   let searchBoxEl = document.createElement("input");
+  searchBoxEl.placeholder = "Search here ......";
   let headerEl = document.getElementById("header-id");
   headerEl.appendChild(searchBoxEl);
   let displayFilteredEpisodeNumberP = document.createElement("p");
@@ -77,7 +87,7 @@ function makePageForEpisodes(episodeList) {
   //clear everything before we start - mostly for search
   mainContentElem.innerHTML = " ";
 
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < episodeList.length; i++) {
     //Creating all the elements needed for each episode + append them
     // console.log(allEpisodesVar);
     let sectionElm = document.createElement("section");
@@ -110,3 +120,5 @@ function makePageForEpisodes(episodeList) {
 }
 
 window.onload = setup;
+
+//test

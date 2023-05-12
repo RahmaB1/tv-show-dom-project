@@ -1,13 +1,13 @@
 body {
   width: 80%;
-  background-color: black;
-  color: white;
+  /* background-color: black; */
+  color: black;
 
 }
 
 
 #header-id {
-  background-color: grey;
+  /* background-color: grey; */
 }
 
 #content{
@@ -17,8 +17,8 @@ body {
   grid-gap: 10px;
   grid-template-columns: 1fr 1fr 1fr;
   
-  background-color: rgb(225, 224, 224);
-  color: white;
+  /* background-color: rgb(225, 224, 224); */
+  /* color: white; */
 
 }
 
@@ -29,6 +29,6 @@ body {
 
 .section-style {
   /* width: 30%; */
-  background-color: rgb(16, 2, 32);
+  /* background-color: rgb(16, 2, 32); */
   padding: 10px;
 }
