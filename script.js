@@ -11,7 +11,6 @@ This show select must list shows in alphabetical order, case-insensitive.
 
 async function setup() {
   // const allEpisodes = getAllEpisodes();
-  //fetch allEpisodes from API
   let allEpisodes = await fetchFromApi();
   let allShows = getAllShows();
   // let allEpisodes1 = await fetchFromApi1();
@@ -49,19 +48,23 @@ function selectShow(shows) {
     //clear everything first
     let contentEl = document.getElementById("content");
     contentEl.innerHTML = "";
+    // selectShowDivEl.innerHTML = ""; //where should I add this to prevent the duplication with each selection
+    // headerEl.innerHTML = "";//test
+
     //then show new content here
-    let urlOfApi = shows[event.target.value]._links.self.href;
-    contentEl.innerHTML = urlOfApi; //just to test if its working
+    let urlOfApi = `${shows[event.target.value]._links.self.href}/episodes`;
     getEpisodesFromSelectedShow(urlOfApi); //will I need to pass the id as well
   });
 }
 
 async function getEpisodesFromSelectedShow(url) {
   //this function will fetch episodes based on the selected show
-  // how can we know which show? I think ID yes and episodes from href
+
   let episodesFromShow = await fetchFromApi1(url);
   console.log(episodesFromShow);
   makePageForEpisodes(episodesFromShow);
+  selectEpisode(episodesFromShow);
+
   makeLiveSearch(episodesFromShow);
 }
 
@@ -91,15 +94,16 @@ async function fetchFromApi() {
 function selectEpisode(episodes) {
   //preparing the elements for the container
   let headerEl = document.getElementById("header-id");
-  let selectShowDivEl = document.createElement("div");
-  selectShowDivEl.id = "select-div-el";
-  headerEl.appendChild(selectShowDivEl);
+  let selectEpisodeDivEl = document.createElement("div");
+  selectEpisodeDivEl.id = "select-div-el";
+
+  headerEl.appendChild(selectEpisodeDivEl);
 
   let selectTitleEl = document.createElement("h3");
   selectTitleEl.textContent = "Select...";
-  selectShowDivEl.appendChild(selectTitleEl);
+  selectEpisodeDivEl.appendChild(selectTitleEl);
   let selectEl = document.createElement("select");
-  selectShowDivEl.appendChild(selectEl);
+  selectEpisodeDivEl.appendChild(selectEl);
 
   for (let i = 0; i < 10; i++) {
     // 1- create option 2-event listener 3- render the page out of for block
@@ -119,6 +123,7 @@ function selectEpisode(episodes) {
     //clear everything first
     let contentEl = document.getElementById("content");
     contentEl.innerHTML = "";
+    selectEpisodeDivEl.innerHTML = "";
     //then show new content here
 
     let arrayTest = [episodes[event.target.value]];
