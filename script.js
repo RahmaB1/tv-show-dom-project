@@ -11,7 +11,8 @@ This show select must list shows in alphabetical order, case-insensitive.
 
 async function setup() {
   // const allEpisodes = getAllEpisodes();
-  let allEpisodes = await fetchFromApi();
+  let allEpisodes = await fetchFromApi(); //this line might be usfule when passing url to make it general ...let urlOfApi = `${shows[event.target.value]._links.self.href}/episodes`;
+
   let allShows = getAllShows();
   // let allEpisodes1 = await fetchFromApi1();
   selectShow(allShows);
@@ -19,6 +20,7 @@ async function setup() {
   selectEpisode(allEpisodes);
 
   makePageForEpisodes(allEpisodes);
+
   makeLiveSearch(allEpisodes);
 }
 
@@ -26,6 +28,8 @@ function selectShow(shows) {
   //preparing the elements for the container
   let headerEl = document.getElementById("header-id");
   let selectShowDivEl = document.createElement("div");
+  selectShowDivEl.id = "select-show-el";
+  selectShowDivEl.style.backgroundColor = "yellow"; //temp coloring
   headerEl.appendChild(selectShowDivEl);
   let selectTitleEl = document.createElement("h3");
   selectTitleEl.textContent = "Select Show...";
@@ -33,7 +37,7 @@ function selectShow(shows) {
   let selectEl = document.createElement("select");
   selectShowDivEl.appendChild(selectEl);
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < shows.length; i++) {
     // 1- create option 2-event listener 3- render the page out of for block
 
     let option = document.createElement("option");
@@ -43,11 +47,12 @@ function selectShow(shows) {
     selectEl.appendChild(option);
   }
 
+  //.....Event Listener .....
   selectEl.addEventListener("click", function (event) {
     console.log("You clicked option " + event.target.value);
     //clear everything first
     let contentEl = document.getElementById("content");
-    contentEl.innerHTML = "";
+    // contentEl.innerHTML = "";
     // selectShowDivEl.innerHTML = ""; //where should I add this to prevent the duplication with each selection
     // headerEl.innerHTML = "";//test
 
@@ -63,6 +68,7 @@ async function getEpisodesFromSelectedShow(url) {
   let episodesFromShow = await fetchFromApi1(url);
   console.log(episodesFromShow);
   makePageForEpisodes(episodesFromShow);
+
   selectEpisode(episodesFromShow);
 
   makeLiveSearch(episodesFromShow);
@@ -91,21 +97,33 @@ async function fetchFromApi() {
   }
 }
 
+//might need to divide selectEpisode into two sections
+// 1-create elements 2 - event listener
+
 function selectEpisode(episodes) {
   //preparing the elements for the container
   let headerEl = document.getElementById("header-id");
+
+  //trying to avoid duplication in episodes by keeping show div and creating everything else here
+  let selectShowDivEl = document.getElementById("select-show-el");
+  headerEl.innerHTML = ""; //its not working as its already there
+  headerEl.appendChild(selectShowDivEl);
+
   let selectEpisodeDivEl = document.createElement("div");
+  selectEpisodeDivEl.style.backgroundColor = "purple"; //temp color
+
+  selectEpisodeDivEl.innerHTML = "";
   selectEpisodeDivEl.id = "select-div-el";
 
   headerEl.appendChild(selectEpisodeDivEl);
 
   let selectTitleEl = document.createElement("h3");
-  selectTitleEl.textContent = "Select...";
+  selectTitleEl.textContent = "Select Episode...";
   selectEpisodeDivEl.appendChild(selectTitleEl);
   let selectEl = document.createElement("select");
   selectEpisodeDivEl.appendChild(selectEl);
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < episodes.length; i++) {
     // 1- create option 2-event listener 3- render the page out of for block
     //  1- create option = done
     let option = document.createElement("option");
@@ -121,20 +139,23 @@ function selectEpisode(episodes) {
   selectEl.addEventListener("click", function (event) {
     console.log("You clicked option " + event.target.value);
     //clear everything first
-    let contentEl = document.getElementById("content");
-    contentEl.innerHTML = "";
-    selectEpisodeDivEl.innerHTML = "";
+    // let contentEl = document.getElementById("content");
+    // contentEl.innerHTML = "";
+    // selectEpisodeDivEl.innerHTML = "";
     //then show new content here
 
-    let arrayTest = [episodes[event.target.value]];
-    makePageForEpisodes(arrayTest);
+    let arrayAfterEpisodeSelect = [episodes[event.target.value]];
+    makePageForEpisodes(arrayAfterEpisodeSelect);
   });
 }
 
 function makeLiveSearch(allEpisodes) {
+  let searchTitleEl = document.createElement("h3");
+  searchTitleEl.textContent = "Search....";
   let searchBoxEl = document.createElement("input");
   searchBoxEl.placeholder = "Search here ......";
   let headerEl = document.getElementById("header-id");
+  headerEl.appendChild(searchTitleEl);
   headerEl.appendChild(searchBoxEl);
   let displayFilteredEpisodeNumberP = document.createElement("p");
   headerEl.appendChild(displayFilteredEpisodeNumberP);
@@ -208,3 +229,11 @@ function makePageForEpisodes(episodeList) {
 }
 
 window.onload = setup;
+
+/*
+two main issues here 
+1- duplication in header when selecting show 
+2- the default episodes are gameOf thrones from level 100 
+
+
+*/
