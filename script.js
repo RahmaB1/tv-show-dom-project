@@ -2,10 +2,77 @@ async function setup() {
   let allShows = getAllShows();
   let urlForApi = `${allShows[0]._links.self.href}/episodes`;
   let allEpisodes = await fetchFromApi1(urlForApi); //this line might be usfule when passing url to make it general ...let urlOfApi = `${shows[event.target.value]._links.self.href}/episodes`;
-  selectShow(allShows);
-  selectEpisode(allEpisodes);
-  makePageForEpisodes(allEpisodes);
-  makeLiveSearch(allEpisodes);
+  makePageForShows(allShows);
+  // selectShow(allShows);
+  // selectEpisode(allEpisodes);
+  // makePageForEpisodes(allEpisodes);
+  // makeLiveSearch(allEpisodes);
+}
+
+function makePageForShows(shows) {
+  /*When your app starts, present a listing of all shows ("shows listing")
+For each show, you must display at least
+name, image, summary, genres, status, rating, and runtime.*/
+
+  const mainContentElem = document.getElementById("content");
+
+  //clear everything before we start
+  mainContentElem.innerHTML = " ";
+
+  for (let i = 0; i < shows.length; i++) {
+    let sectionElm = document.createElement("section");
+    mainContentElem.appendChild(sectionElm);
+    sectionElm.className = "section-style";
+
+    let episodeNameEl = document.createElement("h2");
+    sectionElm.appendChild(episodeNameEl);
+    episodeNameEl.className = "title-background";
+
+    //will creat section for image and summary and inner suction then flex then row direciton
+    let bottomSectionEl = document.createElement("section");
+    bottomSectionEl.className = "bottom-section";
+    sectionElm.appendChild(bottomSectionEl);
+
+    let episodeImageEl = document.createElement("img");
+    bottomSectionEl.appendChild(episodeImageEl);
+
+    let summaryEl = document.createElement("p");
+    // summaryEl.style.padding="0rem"
+    // summaryEl.style.topMargin="50px";
+    bottomSectionEl.appendChild(summaryEl);
+
+    let innerSection = document.createElement("section");
+    innerSection.className = "inner-section";
+    bottomSectionEl.appendChild(innerSection);
+
+    // genres, status, rating, and runtime.*/
+
+    let ratingEl = document.createElement("p");
+    innerSection.appendChild(ratingEl);
+
+    let genresEl = document.createElement("p");
+    innerSection.appendChild(genresEl);
+
+    let statusEl = document.createElement("p");
+    innerSection.appendChild(statusEl);
+
+    let runtimeEl = document.createElement("p");
+    innerSection.appendChild(runtimeEl);
+
+    // let epiName = shows[i].name;
+    // let seasonNumber = shows[i].season;
+    // let episodeNumber = shows[i].number;
+    episodeNameEl.textContent = shows[i].name;
+    episodeImageEl.src = shows[i].image.medium;
+    episodeImageEl.style.height = "10rem";
+
+    summaryEl.innerHTML = shows[i].summary;
+
+    ratingEl.innerHTML = `<strong>Rated: </strong> ${shows[i].rating.average}`;
+    genresEl.innerHTML = `<strong>Genres: </strong> ${shows[i].genres}`;
+    statusEl.innerHTML = `<strong>Status: </strong> ${shows[i].status}`;
+    runtimeEl.innerHTML = `<strong>Runtime: </strong> ${shows[i].runtime}`;
+  }
 }
 
 function selectShow(shows) {
@@ -125,9 +192,6 @@ function makeLiveSearch(allEpisodes) {
 
 function makePageForEpisodes(episodeList) {
   const mainContentElem = document.getElementById("content");
-  const footerEl = document.getElementById("footer-id");
-  footerEl.innerHTML =
-    '<a href="https://tvmaze.com/"> Data is from: Tvmaze.com </a>';
 
   //clear everything before we start
   mainContentElem.innerHTML = " ";
@@ -160,7 +224,7 @@ window.onload = setup;
 
 /*
 two main issues here 
-1- duplication in header when selecting show =solved 
+solved = 1- duplication in header when selecting show =solved 
 2- the default episodes are gameOf thrones from level 100 
 
 
