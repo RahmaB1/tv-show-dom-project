@@ -13,7 +13,7 @@ function selectShow(shows) {
   let selectShowDivEl = document.createElement("div");
   selectShowDivEl.id = "select-show-el";
   headerEl.appendChild(selectShowDivEl);
-  let selectTitleEl = document.createElement("h3");
+  let selectTitleEl = document.createElement("h4");
   selectTitleEl.textContent = "Select Show...";
   selectShowDivEl.appendChild(selectTitleEl);
   let selectEl = document.createElement("select");
@@ -54,17 +54,6 @@ async function fetchFromApi1(url) {
   }
 }
 
-// async function fetchFromApi() {
-//   try {
-//     const response = await fetch("https://api.tvmaze.com/shows/82/episodes");
-
-//     const data = await response.json();
-//     return data;
-//   } catch (error) {
-//     console.error("Error fetching data:", error);
-//   }
-// }
-
 function selectEpisode(episodes) {
   let headerEl = document.getElementById("header-id");
   //trying to avoid duplication in episodes by keeping show div and creating everything else here
@@ -76,7 +65,7 @@ function selectEpisode(episodes) {
   selectEpisodeDivEl.innerHTML = "";
   selectEpisodeDivEl.id = "select-div-el";
   headerEl.appendChild(selectEpisodeDivEl);
-  let selectTitleEl = document.createElement("h3");
+  let selectTitleEl = document.createElement("h4");
   selectTitleEl.textContent = "Select Episode...";
   selectEpisodeDivEl.appendChild(selectTitleEl);
   let selectEl = document.createElement("select");
@@ -97,7 +86,7 @@ function selectEpisode(episodes) {
 }
 
 function makeLiveSearch(allEpisodes) {
-  let searchTitleEl = document.createElement("h3");
+  let searchTitleEl = document.createElement("h4");
   searchTitleEl.textContent = "Search....";
   let searchBoxEl = document.createElement("input");
   searchBoxEl.placeholder = "Search here ......";
@@ -148,7 +137,7 @@ function makePageForEpisodes(episodeList) {
     mainContentElem.appendChild(sectionElm);
     sectionElm.className = "section-style";
 
-    let episodeNameEl = document.createElement("h3");
+    let episodeNameEl = document.createElement("h4");
     sectionElm.appendChild(episodeNameEl);
     episodeNameEl.className = "title-background";
 
