@@ -3,7 +3,7 @@ body {
   /* background-color: black; */
   color: black;
   height: 100%;
-  margin: 0;
+  margin: 2rem;
 
 }
 
@@ -20,14 +20,14 @@ body {
 
 #content{
   
-  
+  width: 80%;
   display: grid;
   grid-gap: 10px;
   /* grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: repeat(auto-fit, minmax (100px, 500px)); */
 
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-auto-rows: minmax(200px, 1fr);
+  grid-auto-rows: minmax(200px, 1fr);
   /* background-color: rgb(225, 224, 224); */
   /* color: white; */
 
