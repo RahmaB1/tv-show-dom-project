@@ -2,14 +2,14 @@ async function setup() {
   let allShows = getAllShows();
   let urlForApi = `${allShows[0]._links.self.href}/episodes`;
   let allEpisodes = await fetchFromApi1(urlForApi); //this line might be usfule when passing url to make it general ...let urlOfApi = `${shows[event.target.value]._links.self.href}/episodes`;
-  makePageForShows(allShows);
+  makePageForShows(allShows, allEpisodes);
   // selectShow(allShows);
   // selectEpisode(allEpisodes);
   // makePageForEpisodes(allEpisodes);
   // makeLiveSearch(allEpisodes);
 }
 
-function makePageForShows(shows) {
+function makePageForShows(shows, episodes) {
   /*When your app starts, present a listing of all shows ("shows listing")
 For each show, you must display at least
 name, image, summary, genres, status, rating, and runtime.*/
@@ -72,6 +72,28 @@ name, image, summary, genres, status, rating, and runtime.*/
     genresEl.innerHTML = `<strong>Genres: </strong> ${shows[i].genres}`;
     statusEl.innerHTML = `<strong>Status: </strong> ${shows[i].status}`;
     runtimeEl.innerHTML = `<strong>Runtime: </strong> ${shows[i].runtime}`;
+
+    /*
+
+    When a show name is clicked, your app should:
+    fetch and present episodes from that show (enabling episode search and selection as before)
+    hide the "shows listing" view.
+
+    */
+
+    sectionElm.addEventListener("click", (event) => {
+      // when this show clicked I want to call makepages for episodes using the id maybe
+      // let showId= shows[i].id;
+      // let clickedShow = episodes.filter((episode) => {
+      //   return episode.id === shows[i].id;
+      // });
+      // console.log(clickedShow);
+      // let urlOfApi = `${shows[event.id]._links.self.href}/episodes`;
+      // getEpisodesFromSelectedShow(urlOfApi);
+      console.log(`http://api.tvmaze.com/episodes/${shows[i].id}`);
+      // getEpisodesFromSelectedShow(`"http://api.tvmaze.com/episodes/"${shows[i].id}`);
+      // );
+    });
   }
 }
 
