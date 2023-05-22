@@ -63,7 +63,10 @@ name, image, summary, genres, status, rating, and runtime.*/
     // let seasonNumber = shows[i].season;
     // let episodeNumber = shows[i].number;
     episodeNameEl.textContent = shows[i].name;
-    episodeImageEl.src = shows[i].image.medium;
+    let fallbackImageUrl =
+      "https://img.freepik.com/free-vector/gradient-no-photo-sign_23-2149263898.jpg?w=900&t=st=1684774054~exp=1684774654~hmac=f3127a286c175ffe2bb944611dec67f8ad4a14fd3acee082901e168742c6a008";
+    episodeImageEl.src = shows[i].image?.medium ?? fallbackImageUrl;
+
     episodeImageEl.style.height = "10rem";
 
     summaryEl.innerHTML = shows[i].summary;
@@ -80,20 +83,29 @@ name, image, summary, genres, status, rating, and runtime.*/
     hide the "shows listing" view.
 
     */
+    sectionElm.dataset.showId = i;
 
-    sectionElm.addEventListener("click", (event) => {
-      // when this show clicked I want to call makepages for episodes using the id maybe
-      // let showId= shows[i].id;
-      // let clickedShow = episodes.filter((episode) => {
-      //   return episode.id === shows[i].id;
-      // });
-      // console.log(clickedShow);
-      // let urlOfApi = `${shows[event.id]._links.self.href}/episodes`;
-      // getEpisodesFromSelectedShow(urlOfApi);
-      console.log(`http://api.tvmaze.com/episodes/${shows[i].id}`);
-      // getEpisodesFromSelectedShow(`"http://api.tvmaze.com/episodes/"${shows[i].id}`);
-      // );
+    sectionElm.addEventListener("click", function (event) {
+      let showId = event.currentTarget.dataset.showId;
+      let urlOfApi = `${shows[showId]._links.self.href}/episodes`;
+      console.log(urlOfApi);
+      getEpisodesFromSelectedShow(urlOfApi);
     });
+
+    // when this show clicked I want to call makepages for episodes using the id maybe
+    // let showId= shows[i].id;
+    // let clickedShow = episodes.filter((episode) => {
+    //   return episode.id === shows[i].id;
+    // });
+    // console.log(clickedShow);
+    // let urlOfApi = `${shows[event.id]._links.self.href}/episodes`;
+    // getEpisodesFromSelectedShow(urlOfApi);
+    //console.log(`http://api.tvmaze.com/episodes/${shows[i].id}`);
+    // getEpisodesFromSelectedShow(`"http://api.tvmaze.com/episodes/"${shows[i].id}`);
+    // );
+
+    // I have problem here that I don't really know how to connect the show with the episode url maybe the word episode should come later
+    // });
   }
 }
 
