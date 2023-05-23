@@ -5,7 +5,7 @@ async function setup() {
   makePageForShows(allShows);
   //  makePageForEpisodes(allEpisodes);
   selectShow(allShows);
-  selectEpisode(allEpisodes);
+  selectEpisode(allEpisodes, allShows);
   // makeLiveSearch(allEpisodes); // need to make it work for both shows and episodes
   navigateToShows(allShows);
   searchInsideShows(allShows);
@@ -16,15 +16,19 @@ through show names, genres, and summary texts.
 */
 
 function searchInsideShows(shows) {
+  const headerEl = document.getElementById("header-id");
+  const searchContainer = document.createElement("div");
+  searchContainer.innerHTML = "";
+  headerEl.appendChild(searchContainer);
   let searchTitleEl = document.createElement("h4");
   searchTitleEl.textContent = "Search....";
   let searchBoxEl = document.createElement("input");
   searchBoxEl.placeholder = "Search here ......";
-  let headerEl = document.getElementById("header-id");
-  headerEl.appendChild(searchTitleEl);
-  headerEl.appendChild(searchBoxEl);
+
+  searchContainer.appendChild(searchTitleEl);
+  searchContainer.appendChild(searchBoxEl);
   let displayFilteredEpisodeNumberP = document.createElement("p");
-  headerEl.appendChild(displayFilteredEpisodeNumberP);
+  searchContainer.appendChild(displayFilteredEpisodeNumberP);
 
   searchBoxEl.addEventListener("input", function () {
     let searchedWords = searchBoxEl.value;
@@ -43,6 +47,9 @@ function navigateToShows(shows) {
 
   buttonEl.addEventListener("click", () => {
     makePageForShows(shows);
+    // searchInsideShows(shows);
+    //duplication here .. each time this button clicked two searches appears as the funciton called twice
+    //reson for including  searchInsideShows () to solve the search issue, which is searching only inside episodes not the whole shows after the back to all show..
   });
 }
 
@@ -128,7 +135,7 @@ async function getEpisodesFromSelectedShow(url, shows) {
   console.log(episodesFromShow);
   makePageForEpisodes(episodesFromShow);
   selectEpisode(episodesFromShow);
-  makeLiveSearch(episodesFromShow);
+  makeLiveSearch(episodesFromShow); //this is making confusion when clicking on back to all shows
   navigateToShows(shows);
 }
 
@@ -144,7 +151,7 @@ async function fetchFromApi1(url) {
   }
 }
 
-function selectEpisode(episodes) {
+function selectEpisode(episodes, shows) {
   let headerEl = document.getElementById("header-id");
   //trying to avoid duplication in episodes by keeping show div and creating everything else here
   let selectShowDivEl = document.getElementById("select-show-el");
@@ -169,9 +176,7 @@ function selectEpisode(episodes) {
   }
 
   selectEl.addEventListener("click", function (event) {
-    console.log("You clicked option " + event.target.value);
-    let arrayAfterEpisodeSelect = [episodes[event.target.value]];
-    makePageForEpisodes(arrayAfterEpisodeSelect);
+    makePageForEpisodes([episodes[event.target.value]], shows);
   });
 }
 
@@ -197,21 +202,16 @@ function makeLiveSearch(allEpisodes) {
   });
 }
 function isShowIncludeWord(shows, word) {
-  let filteredShows = [];
-  //lowercase the genres array
-
-  for (let show of shows) {
+  const filteredShows = shows.filter((show) => {
     let loweredGenres = show.genres.map((element) => {
       return element.toLowerCase();
     });
-    if (
+    return (
       show.name.toLowerCase().includes(word.toLowerCase()) ||
       show.summary.toLowerCase().includes(word.toLowerCase()) ||
       loweredGenres.includes(word.toLowerCase())
-    ) {
-      filteredShows.push(show);
-    }
-  }
+    );
+  });
   return filteredShows;
 }
 
@@ -229,7 +229,7 @@ function isEpisodeIncludeWord(allepisodes, word) {
   return filteredEpisodes;
 }
 
-function makePageForEpisodes(episodeList) {
+function makePageForEpisodes(episodeList, shows) {
   const mainContentElem = document.getElementById("content");
 
   mainContentElem.innerHTML = " "; //clear everything
@@ -258,6 +258,8 @@ function makePageForEpisodes(episodeList) {
     episodeImageEl.src = episodeList[i].image.medium;
     summaryEl.innerHTML = episodeList[i].summary;
   }
+
+  // navigateToShows(shows);
 }
 
 window.onload = setup;
@@ -266,3 +268,4 @@ window.onload = setup;
 //make show images smaller
 //change color / theme
 //change episodes style as it was affected by show style
+//to make the search function works for both shows and episodes instead of using two seperate function
